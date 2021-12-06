@@ -1,0 +1,20 @@
+{
+  "name": "puppeteer-crawler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjcchen/puppeteer-crawler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjcchen/puppeteer-crawler/issues"
+  },
+  "homepage": "https://github.com/tjcchen/puppeteer-crawler#readme"
+}
