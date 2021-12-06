@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/tjcchen/puppeteer-crawler/issues"
   },
-  "homepage": "https://github.com/tjcchen/puppeteer-crawler#readme"
+  "homepage": "https://github.com/tjcchen/puppeteer-crawler#readme",
+  "dependencies": {
+    "puppeteer": "^12.0.1"
+  }
 }
