@@ -15,5 +15,10 @@ const puppeteer = require('puppeteer');
     };
   });
 
+  let html = await page.$eval('html', el => el.outerHTML);
+
   console.log(data);
+  console.log(html);
+
+  await browser.close();
 })();
