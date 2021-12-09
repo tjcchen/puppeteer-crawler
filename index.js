@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 (async () => {
-  let url = 'https://expert.baidu.com';
+  let url = 'http://www.tjcchen.cn';
 
   let browser = await puppeteer.launch({ headless: true });
   let page = await browser.newPage();
@@ -9,7 +9,7 @@ const puppeteer = require('puppeteer');
   await page.goto(url, { waitUntil: 'networkidle2' });
 
   const retrieveMaxDomDepth = (root = document) => {
-    let depth = 1, sel = 'body > *';
+    let depth = 1, sel = '* > *';
     while(root.querySelector(sel)) {
       sel += ' > *';
       depth++;
