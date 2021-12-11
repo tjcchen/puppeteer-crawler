@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer');
+const chalk     = require('chalk');
+const {log}     = require('console');
 
 (async () => {
   let url = 'http://www.tjcchen.cn';
@@ -14,7 +16,9 @@ const puppeteer = require('puppeteer');
       sel += ' > *';
       depth++;
     }
-    return `The max dom depth is ${depth}.`;
+    return {
+      depth
+    };
   };
 
   // let data = await page.evaluate(() => {
@@ -27,7 +31,7 @@ const puppeteer = require('puppeteer');
 
   let data = await page.evaluate(retrieveMaxDomDepth);
 
-  console.log(data);
+  log(chalk.blue(data));
 
   await browser.close();
 })();
