@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const chalk     = require('chalk');
 const {log}     = require('console');
 
 (async () => {
@@ -31,7 +30,7 @@ const {log}     = require('console');
 
   let data = await page.evaluate(retrieveMaxDomDepth);
 
-  log(chalk.blue(data));
+  log(data);
 
   await browser.close();
 })();
