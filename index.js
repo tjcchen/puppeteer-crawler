@@ -9,26 +9,13 @@ const {log}     = require('console');
 
   await page.goto(url, { waitUntil: 'networkidle2' });
 
-  const retrieveMaxDomDepth = (root = document) => {
-    let depth = 1, sel = '* > *';
-    while(root.querySelector(sel)) {
-      sel += ' > *';
-      depth++;
-    }
+  let data = await page.evaluate(() => {
+    let title = document.querySelector('div[class="flex__item"] > div').innerText;
     return {
-      depth
+      title
     };
-  };
-
-  // let data = await page.evaluate(() => {
-  //   let title = document.querySelector('div[class="flex__item"] > div').innerText;
-  //   return {
-  //     title
-  //   };
-  // });
+  });
   // let html = await page.$eval('html', el => el.outerHTML);
-
-  let data = await page.evaluate(retrieveMaxDomDepth);
 
   log(data);
 
