@@ -1,6 +1,13 @@
 const puppeteer = require('puppeteer');
 const {log}     = require('console');
 
+const converter = (el = document) => {
+  const node = el.querySelector('html');
+  return {
+    type: node.tagName,
+    props: node.outerHTML
+  }
+};
 
 (async () => {
   let url = 'http://www.tjcchen.cn';
@@ -10,13 +17,7 @@ const {log}     = require('console');
 
   await page.goto(url, { waitUntil: 'networkidle2' });
 
-  let data = await page.evaluate(() => {
-    let title = document.querySelector('div[class="flex__item"] > div').innerText;
-    return {
-      title
-    };
-  });
-  // let html = await page.$eval('html', el => el.outerHTML);
+  let data = await page.evaluate(converter);
 
   log(data);
 
