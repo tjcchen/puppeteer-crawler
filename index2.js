@@ -1,12 +1,29 @@
 const puppeteer = require('puppeteer');
 const {log}     = require('console');
 
-const converter = (el = document) => {
-  const node = el.querySelector('html');
-  return {
-    type: node.tagName,
-    props: node.outerHTML
+const buildVTree = (root, tree = {}) => {
+  let node;
+  if (!root) {
+      root = document;
+      node = root.querySelector('html');
   }
+  const childNodes = Array.from(node.childNodes);
+
+  childNodes.forEach(childNode => {
+      if (childNode.nodeType === 1) { // element node
+          tree = {
+              tag: node.tagName,
+              children: {
+                  tag: childNode.tagName
+              }
+          };
+      }
+      if (childNode.childNodes && childNode.childNodes.length > 0) {
+          buildVTree(childNode, tree);
+      }
+  });
+
+  return tree;
 };
 
 (async () => {
@@ -17,7 +34,7 @@ const converter = (el = document) => {
 
   await page.goto(url, { waitUntil: 'networkidle2' });
 
-  let data = await page.evaluate(converter);
+  let data = await page.evaluate(buildVTree);
 
   log(data);
 
