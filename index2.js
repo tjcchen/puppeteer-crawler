@@ -1,31 +1,6 @@
 const puppeteer = require('puppeteer');
 const {log}     = require('console');
 
-const buildVTree = (root, tree = {}) => {
-  let node;
-  if (!root) {
-      root = document;
-      node = root.querySelector('html');
-  }
-  const childNodes = Array.from(node.childNodes);
-
-  childNodes.forEach(childNode => {
-      if (childNode.nodeType === 1) { // element node
-          tree = {
-              tag: node.tagName,
-              children: {
-                  tag: childNode.tagName
-              }
-          };
-      }
-      if (childNode.childNodes && childNode.childNodes.length > 0) {
-          buildVTree(childNode, tree);
-      }
-  });
-
-  return tree;
-};
-
 (async () => {
   let url = 'http://www.tjcchen.cn';
 
@@ -34,7 +9,33 @@ const buildVTree = (root, tree = {}) => {
 
   await page.goto(url, { waitUntil: 'networkidle2' });
 
-  let data = await page.evaluate(buildVTree);
+  let data = await page.evaluate(() => {
+    const buildVTree = (root, tree = {}) => {
+      let node;
+      if (!root) {
+          root = document;
+          node = root.querySelector('html');
+      }
+      const childNodes = Array.from(node.childNodes);
+      childNodes.forEach(childNode => {
+          console.log('loop', childNode);
+          if (childNode.nodeType === 1) { // element node
+              tree = {
+                  tag: node.tagName,
+                  children: {
+                      tag: childNode.tagName
+                  }
+              };
+          }
+          if (childNode.childNodes && childNode.childNodes.length > 0) {
+              buildVTree(childNode, tree);
+          }
+      });
+      return tree;
+    };
+
+    return buildVTree();
+  });
 
   log(data);
 
