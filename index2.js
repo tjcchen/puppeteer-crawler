@@ -20,6 +20,8 @@ const {log}     = require('console');
                   type: node.tagName,
                   children: []
               };
+          } else {
+            
           }
           const childNodes = Array.from(node.childNodes);
 
@@ -28,12 +30,6 @@ const {log}     = require('console');
                   let subTree = {
                       type: childNode.tagName
                   };
-                  // todo 构建subTree children
-                  if (typeof tree.children === 'object') {
-                      tree.children.push(subTree);
-                  } else {
-                      tree.children.children = [];
-                  }
                   result.push(subTree);
               }
               if (childNode.childNodes && childNode.childNodes.length > 0) {
