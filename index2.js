@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const {log}     = require('console');
-const URL = 'http://www.tjcchen.cn';
+const URL       = 'http://www.tjcchen.cn';
 
 // IIFE
 (async () => {
