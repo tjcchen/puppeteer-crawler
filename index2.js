@@ -1,52 +1,58 @@
 const puppeteer = require('puppeteer');
 const {log}     = require('console');
+const URL = 'http://www.tjcchen.cn';
 
 // IIFE
 (async () => {
-  let url     = 'http://www.tjcchen.cn';
-  let browser = await puppeteer.launch({headless: true});
-  let page    = await browser.newPage();
+    let browser = await puppeteer.launch({headless: true});
+    let page    = await browser.newPage();
 
-  await page.goto(url, {waitUntil: 'networkidle2'});
-  let data = await page.evaluate(() => {
-      let tree = null;
-      let result = [];
-      let count = 0;
+    await page.goto(URL, {waitUntil: 'networkidle2'});
+    let data = await page.evaluate(() => {
+        const buildVTree = node => {
+            let id = node.id || undefined;
+            let tagName = node.tagName || undefined;
+            let classes = node.classList ? Array.from(node.classList) : undefined;
+            let children = node.children || [];
+            let scannedChildren = [];
+            for (let i = 0, len = children.length; i < len; i++) {
+                // DFS
+                let tree = buildVTree(children[i]);
+                scannedChildren.push(tree);
+            }
+            return {
+                tag: tagName,
+                id: id,
+                classes: (classes && classes.length) ? classes : undefined,
+                children: (scannedChildren && scannedChildren.length) ? scannedChildren : undefined,
+            };
+        };
 
-      const buildVTree = (node) => {
-          if (!node) {
-              node = document.querySelector('html');
-              tree = {
-                  type: node.tagName,
-                  children: []
-              };
-          } else {
-            
-          }
-          const childNodes = Array.from(node.childNodes);
+        const retrieveMaxDomDepth = (root = document) => {
+            let depth = 1;
+            let sel   = '* > *';
+            while (root.querySelector(sel)) {
+                sel += ' > *';
+                depth++;
+            }
+            return depth;
+        };
 
-          childNodes.forEach(childNode => {
-              if (childNode.nodeType === 1) { // element node
-                  let subTree = {
-                      type: childNode.tagName
-                  };
-                  result.push(subTree);
-              }
-              if (childNode.childNodes && childNode.childNodes.length > 0) {
-                  buildVTree(childNode);
-              }
-          });
+        return {
+            tree: JSON.stringify(
+                buildVTree(document.documentElement),
+                null,
+                4
+            ),
+            depth: retrieveMaxDomDepth(),
+        };
+    });
 
-          return {
-              tree, result, count
-          };
-      };
+    log('==============================================');
+    log(`PAGE URL IS: ${URL}`);
+    log(`MAX DOM DEPTH IS: ${data.depth}`);
+    log('DOM TREE: ', data.tree);
+    log('===============================================');
 
-      return buildVTree();
-  });
-
-  log(data);
-
-  // log(chalk.yellow(`The max DOM depth of page "${FETCH_URL}" is ${data.depth}.`));
-  await browser.close();
+    await browser.close();
 })();
