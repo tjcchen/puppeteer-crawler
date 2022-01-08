@@ -15,3 +15,83 @@ function find_max(nums) {
 }
 
 console.log(find_max([3, 9, 7, 8, 1]));
+
+
+/**
+ * Calculate the depth of a dom tree
+ */
+const domTree = {
+  "tag": "HTML",
+  "children": [
+      {
+          "tag": "HEAD",
+          "children": [
+              {
+                  "tag": "META"
+              },
+              {
+                  "tag": "META"
+              },
+              {
+                  "tag": "LINK"
+              },
+              {
+                  "tag": "TITLE"
+              },
+              {
+                  "tag": "STYLE"
+              }
+          ]
+      },
+      {
+          "tag": "BODY",
+          "children": [
+              {
+                  "tag": "DIV",
+                  "classes": [
+                      "flex__container"
+                  ],
+                  "children": [
+                      {
+                          "tag": "DIV",
+                          "classes": [
+                              "flex__item"
+                          ],
+                          "children": [
+                              {
+                                  "tag": "DIV"
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "tag": "DIV",
+                  "classes": [
+                      "footer"
+                  ],
+                  "children": [
+                      {
+                          "tag": "A"
+                      }
+                  ]
+              }
+          ]
+      }
+  ]
+};
+
+const getDomTreeDepth = tree => {
+    let depth = 0;
+    if (tree.children) {
+        tree.children.forEach(d => {
+            let tmp = getDomTreeDepth(d);
+            if (tmp > depth) {
+                depth = tmp;
+            }
+        });
+    }
+    return depth + 1;
+};
+
+console.log('dom tree depth: ', getDomTreeDepth(domTree));
