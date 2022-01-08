@@ -16,10 +16,7 @@ function find_max(nums) {
 
 console.log(find_max([3, 9, 7, 8, 1]));
 
-
-/**
- * Calculate the depth of a dom tree
- */
+//=========================================
 const domTree = {
   "tag": "HTML",
   "children": [
@@ -81,6 +78,11 @@ const domTree = {
   ]
 };
 
+/**
+ * Calculate the depth of a dom tree
+ * 
+ * @param {*} tree dom tree object
+ */
 const getDomTreeDepth = tree => {
     let depth = 0;
     if (tree.children) {
